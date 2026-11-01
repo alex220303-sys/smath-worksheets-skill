@@ -18,6 +18,11 @@ import sys
 import tempfile
 from pathlib import Path
 
+# Консоль Windows по умолчанию cp1252 — кириллица в print() иначе падает с
+# UnicodeEncodeError (на этом краснели windows-джобы в CI).
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "lib"))
 
