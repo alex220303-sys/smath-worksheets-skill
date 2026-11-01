@@ -1,5 +1,10 @@
 # smath-worksheets
 
+[![CI](https://github.com/alex220303-sys/smath-worksheets-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/alex220303-sys/smath-worksheets-skill/actions/workflows/ci.yml)
+![Verified on SMath Studio 1.5.0.9678](https://img.shields.io/badge/verified%20on%20SMath%20Studio-1.5.0.9678-blue)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
 Agent skill for generating **SMath Studio** worksheets (`.sm`) that actually open,
 compute and look right — verified against SMath Studio 1.5.0.9678.
 
@@ -31,6 +36,8 @@ compute and look right — verified against SMath Studio 1.5.0.9678.
 | `scripts/screenshot.py` | открыть, развернуть окно, снять скриншот (визуальная проверка) |
 | `references/format-notes.md` | разбор XML-формата: регионы, RPN-токены, ограничения |
 | `examples/minimal.py`, `examples/minimal.sm` | минимальный рабочий лист |
+| `tests/test_sm.py` | быстрые проверки без SMath: формат, индексы, `<result>`, значения |
+| `.github/workflows/` | CI: автотесты на push и ручная проверка открытия в SMath |
 
 ## Установка
 
@@ -43,6 +50,14 @@ python install.py --target "C:\путь\.dsh\skills"
 внутри одного из корней скиллов (`~/.dsh/skills`, `<project>/.dsh/skills`, …).
 
 ## Быстрый старт
+
+Установите зависимости (`pip install pywin32 Pillow` — они нужны только для
+проверки открытия и скриншотов; сам генератор `lib/smscript.py` обходится
+стандартной библиотекой), затем создайте и проверьте лист:
+
+```powershell
+pip install pywin32 Pillow
+```
 
 ```python
 import sys; sys.path.insert(0, r"<repo>/lib")
@@ -62,6 +77,12 @@ python scripts/check_open.py "расчёт.sm"          # ОК / текст ош
 python scripts/screenshot.py "расчёт.sm" "shot.png"
 ```
 
+Быстрая самопроверка без SMath (формат, индексы, значения) — одна команда:
+
+```powershell
+python tests/test_sm.py --verbose
+```
+
 ## Как это выглядит
 
 Рабочие листы, сгенерированные этой библиотекой (SMath Studio 1.5, все переменные
@@ -70,6 +91,32 @@ python scripts/screenshot.py "расчёт.sm" "shot.png"
 | Задание № 1 — поршневой компрессор | Задание № 2 — ротационно-пластинчатый |
 |---|---|
 | ![Задание 1](docs/smath-zadanie1.png) | ![Задание 2](docs/smath-zadanie2.png) |
+
+## Проверки и CI
+
+Что проверяется без SMath (это и есть `tests/test_sm.py`, бейдж CI вверху):
+
+* шапка и `<settings>` — формат 0.88, а не схема 1.0 (иначе SMath 1.5 падает);
+* подстрочные индексы записаны точкой (`P.н`), без функции `el()`;
+* у определений есть `<result action="numeric">` — без него не видно значений;
+* сгенерированный лист разбирается независимым парсером `lib/smread.py`, и
+  значения сходятся с эталонными (Π₀, R_г, скорость звука, число ступеней);
+* файл `examples/minimal.sm` из репозитория не испорчен;
+* оценка высот областей растёт для дробей (иначе блоки налезают друг на друга).
+
+```powershell
+python tests/test_sm.py --verbose
+```
+
+`.github/workflows/ci.yml` запускает это на каждый push и pull request:
+`ubuntu-latest` и `windows-latest`, Python 3.10 и 3.12.
+
+**Чего CI не делает:** не открывает файл в самом SMath Studio. Для этого нужен
+Windows с установленным SMath и графической сессией — на облачных раннерах
+такого нет. Поэтому реальная проверка открытия вынесена в отдельный ручной
+workflow `.github/workflows/smath-open.yml`: **Actions → «SMath open (manual)» →
+Run workflow**. Он рассчитан на self-hosted Windows-раннер с метками
+`self-hosted`, `windows`, `smath` и дополнительно сохраняет скриншот в артефакты.
 
 ## Технические требования
 
