@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?application progid="SMath Studio" version="0.88"?>
+<regions>
+  <settings>
+    <editable>true</editable>
+    <calculation>
+      <functions>1</functions>
+      <precision>4</precision>
+      <angle>radians</angle>
+      <fractions>decimal</fractions>
+      <recalculation>true</recalculation>
+    </calculation>
+    <dependences>
+      <assembly name="SMath Studio" version="0.88" guid="a37cba83-b69c-4c71-9992-55ff666763bd" />
+      <assembly name="Math Region" version="0.88" guid="02f1ab51-215b-466e-a74d-5d8b1cf85e8d" />
+      <assembly name="Text Region" version="0.88" guid="485d28c5-349a-48b6-93be-12a35a1c1e39" />
+    </dependences>
+  </settings>
+  <region id="0" left="9" top="9" width="700" height="31" color="#0000ff" bgColor="#ffffff" fontSize="14">
+    <text>
+      <p bold="true">МИНИМАЛЬНЫЙ РАБОЧИЙ ЛИСТ</p>
+    </text>
+  </region>
+  <region id="1" left="9" top="43" width="700" height="24" color="#000000" bgColor="#ffffff" fontSize="10">
+    <text>
+      <p>Проверка формата 0.88, индексов через точку и вывода результатов.</p>
+    </text>
+  </region>
+  <region id="2" left="9" top="70" width="700" height="26" color="#000000" bgColor="#ffffff" fontSize="11">
+    <text>
+      <p bold="true">1. ИСХОДНЫЕ ДАННЫЕ</p>
+    </text>
+  </region>
+  <region id="3" left="9" top="99" width="260" height="30" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">P.н</e>
+        <e type="operand">100000</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">100000</e>
+      </result>
+    </math>
+  </region>
+  <region id="4" left="9" top="132" width="260" height="30" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">P.к</e>
+        <e type="operand">1200000</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">1200000</e>
+      </result>
+    </math>
+  </region>
+  <region id="5" left="9" top="165" width="260" height="30" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">k</e>
+        <e type="operand">1.4</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">1.4</e>
+      </result>
+    </math>
+  </region>
+  <region id="6" left="9" top="198" width="260" height="30" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">T.н</e>
+        <e type="operand">20</e>
+        <e type="operand">273.15</e>
+        <e type="operator" args="2">+</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">293.15</e>
+      </result>
+    </math>
+  </region>
+  <region id="7" left="9" top="231" width="260" height="50" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">R.г</e>
+        <e type="operand">8314.46</e>
+        <e type="operand">28.0134</e>
+        <e type="operator" args="2">/</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">296.803</e>
+      </result>
+    </math>
+  </region>
+  <region id="8" left="9" top="284" width="700" height="26" color="#000000" bgColor="#ffffff" fontSize="11">
+    <text>
+      <p bold="true">2. РАСЧЁТ</p>
+    </text>
+  </region>
+  <region id="9" left="9" top="313" width="260" height="50" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">П.0</e>
+        <e type="operand">P.к</e>
+        <e type="operand">P.н</e>
+        <e type="operator" args="2">/</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">12</e>
+      </result>
+    </math>
+  </region>
+  <region id="10" left="9" top="366" width="260" height="30" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">a</e>
+        <e type="operand">k</e>
+        <e type="operand">R.г</e>
+        <e type="operator" args="2">*</e>
+        <e type="operand">T.н</e>
+        <e type="operator" args="2">*</e>
+        <e type="function" args="1">sqrt</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">349.014</e>
+      </result>
+    </math>
+  </region>
+  <region id="11" left="9" top="399" width="260" height="50" color="#000000" bgColor="#ffffff" fontSize="10">
+    <math>
+      <input>
+        <e type="operand">z</e>
+        <e type="operand">П.0</e>
+        <e type="function" args="1">ln</e>
+        <e type="operand">3.5</e>
+        <e type="function" args="1">ln</e>
+        <e type="operator" args="2">/</e>
+        <e type="operator" args="2">:</e>
+      </input>
+      <result action="numeric">
+        <e type="operand">1.98354</e>
+      </result>
+    </math>
+  </region>
+</regions>
