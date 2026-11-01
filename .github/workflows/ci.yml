@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: tests (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # smscript/smread обходятся стандартной библиотекой, поэтому на раннере
+      # ничего устанавливать не нужно. SMath Studio здесь нет (GUI для Windows),
+      # но всё, что приводило к «файл не открывается», проверяется статически
+      # и независимым парсером — см. tests/test_sm.py.
+      - name: Build the example worksheet
+        run: python examples/minimal.py
+
+      - name: Run checks
+        run: python tests/test_sm.py --verbose
+
+      - name: Check the committed example is unchanged by regeneration
+        shell: bash
+        run: |
+          if git diff --quiet -- examples/minimal.sm; then
+            echo "examples/minimal.sm совпадает с результатом генерации"
+          else
+            echo "::warning::examples/minimal.sm отличается от свежей генерации"
+            git diff --stat -- examples/minimal.sm
+          fi
