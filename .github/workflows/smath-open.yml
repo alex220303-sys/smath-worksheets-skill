@@ -1,0 +1,42 @@
+name: SMath open (manual)
+
+# Проверка «файл реально открывается в SMath Studio» требует установленного
+# SMath Studio и графической сессии, поэтому она не идёт на облачных раннерах
+# GitHub. Запускайте вручную на self-hosted Windows-раннере, где стоит SMath:
+# Settings -> Actions -> Runners -> New self-hosted runner (Windows), метки:
+#   self-hosted, windows, smath
+on:
+  workflow_dispatch:
+    inputs:
+      path:
+        description: "Путь к файлу или папке с .sm"
+        required: false
+        default: "examples/minimal.sm"
+
+jobs:
+  open:
+    runs-on: [self-hosted, windows, smath]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install GUI-automation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pywin32 Pillow
+
+      - name: Open the worksheet in SMath Studio
+        run: python scripts/check_open.py "${{ inputs.path }}"
+
+      - name: Screenshot for visual review
+        run: python scripts/screenshot.py "examples/minimal.sm" "shot.png"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smath-screenshot
+          path: shot.png
+          if-no-files-found: ignore
